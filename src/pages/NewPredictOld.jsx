@@ -34,7 +34,6 @@ function NewPredict() {
       const res = await axios.get("/api/models/");
       const resImg = await axios.get("/api/images/");
       const resPanel = await axios.get("/api/panels/");
-      let data = [];
       chAllModel(res.data);
       chAllPanel(resPanel.data);
       console.log(res.data);
@@ -97,29 +96,6 @@ function NewPredict() {
 
   function handlePredictTime(e) {
     setPredictTime(e.target.value);
-  }
-
-  function handlePanelName(e) {
-    chPanelName(e.target.value);
-  }
-
-  function selectPanel() {
-    if (
-      window.confirm("按下確認後則無法再變更所選擇的panel, 是否選擇該panel?")
-    ) {
-      changeImageId([panelId]);
-      chPreviewImgUrl([""]);
-    }
-  }
-
-  function postPredict() {
-    if (predictDate === "" || predictTime === "") {
-      alert("請輸入所有欄位以繼續");
-      return;
-    }
-    console.log(predictDate);
-    console.log(predictTime);
-    //changeModelId(1);
   }
 
   function uploadFile(event) {
@@ -219,7 +195,7 @@ function NewPredict() {
       timeout: 60000,
     };
     console.log("param: ", param);
-    try {    
+    try {
       chIsUploadingImg(true);
       setShowUploadBtn(false);
       fetch(`http://127.0.0.1:8000/api/images/`, {
@@ -280,34 +256,27 @@ function NewPredict() {
       return;
     }
     chIsUploadingPre(true);
-    let imageIdList = [];
-    for (let i = 1; i < imageId.length; i++) {
-      imageIdList.push(imageId[i]);
-    }
-    console.log(imageIdList);
-    console.log({
-      model: modelId,
-      created_at: predictDate + "T" + predictTime + ":00Z",
-      images: [imageIdList],
-    });
-    const response = await fetch(`http://127.0.0.1:8000/api/predicts/`, {
-      method: "POST",
-      body: JSON.stringify({
+    console.log(imageId);
+    try {
+      const payload = {
         model: modelId,
-        created_at: predictDate + "T" + predictTime + ":00Z",
-        images: imageIdList,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const responseText = await response.json();
-    console.log(responseText); // logs 'OK'
-    if (responseText) {
+        created_at: `${predictDate}T${predictTime}:00Z`,
+        images: imageId,
+      };
+      console.log("payload", payload);
+      const res = await axios.post("/api/predicts/", payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        timeout: 60000,
+      });
+      const id = res.data.id;
+      window.location.href = `/predicts/${id}`;
+    } catch (err) {
+      console.log(err);
+      alert("Something went wrong...");
       chIsUploadingPre(false);
-      window.location.href = "/";
     }
-
   }
 
   return (
@@ -334,9 +303,9 @@ function NewPredict() {
         ></input>
         <ModelSelector />
       </form>
-      
+
       <div className="upload-img-form-container">
-        <PanelSelector /> 
+        <PanelSelector />
       </div>
       <hr />
 
