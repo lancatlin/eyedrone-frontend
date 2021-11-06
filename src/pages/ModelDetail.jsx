@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import axios from "../components/axios";
+import axios from "../api/axios";
 import Table from "react-bootstrap/Table";
+import translate from "../components/translate";
 
 async function getModelDetail(id) {
   const res = await axios.get(`/api/models/${id}/`);
@@ -35,7 +36,7 @@ function ModelDetail() {
   console.log(data);
   const substanceList = data.substances.map(({ name, formula, r2 }) => (
     <div key={name}>
-      <h3>{name}</h3>
+      <h4>{translate[name]}</h4>
       <p>模型：{formula}</p>
       <p>R2：{format(r2)}</p>
     </div>
@@ -90,7 +91,7 @@ function ModelDetail() {
   score.sum = (score.do + score.bod + score.ss + score.nh3n) / 4;
   const predictionTable = (
     <div align="center">
-      <strong>實際值 / 預測值 / 誤差值</strong>
+      <strong>實際值 / 預測值 / 誤差百分比</strong>
       <Table
         striped
         bordered
@@ -100,10 +101,10 @@ function ModelDetail() {
         <thead>
           <tr>
             <th>座標</th>
-            <th>do</th>
-            <th>bod</th>
-            <th>ss</th>
-            <th>nh3n</th>
+            <th>{translate["do"]}</th>
+            <th>{translate["bod"]}</th>
+            <th>{translate["ss"]}</th>
+            <th>{translate["nh3n"]}</th>
           </tr>
         </thead>
         <tbody>

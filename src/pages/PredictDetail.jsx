@@ -1,11 +1,11 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import axios from "../components/axios";
+import axios from "../api/axios";
 import ResultDetail from "../components/ResultDetail";
 
 async function getPredict(id) {
-  const res = await axios.get(`/api/predicts/${id}`);
+  const res = await axios.get(`/api/predicts/${id}/`);
   return res.data;
 }
 
@@ -22,12 +22,16 @@ function PredictDetail() {
     console.log(error);
     return <p>發生錯誤</p>;
   }
+  console.log(data);
   const resultList = data.results.map((result, id) => (
-    <ResultDetail result={result} resultId={id} />
+    <div key={result.id}>
+      <ResultDetail result={result} resultId={id} />
+    </div>
   ));
   return (
     <div>
-      <p>Model ID: {data.model}</p>
+      <h2>水質模型：{data.model.name}</h2>
+      <p>建立時間：{data.created_at}</p>
       <div>{resultList}</div>
     </div>
   );

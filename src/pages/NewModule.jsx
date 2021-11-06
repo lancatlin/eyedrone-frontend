@@ -1,14 +1,12 @@
 import React, { useRef, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Spot from "../components/Spot";
 import PrevPic from "../components/prev-pic";
 import TableRow from "../components/TableRow";
-import axios from "../components/axios";
-// import axios from "axios"
+import axios from "../api/axios";
 import FormData from "form-data";
 import Tiff from "tiff.js";
 import Table from "react-bootstrap/Table";
-import StreamMesPopUp from "../components/StreamMesPopUp";
 import useHoverPopUp from "../components/useHoverPopUp";
 import usePanelSelector from "../components/usePanelSelector";
 
@@ -660,15 +658,13 @@ function NewModule(props) {
         />
       </form>
       <div className="upload-img-form-container">
-        <h5 className="upload-img-form-label">
-          上傳panel: (panel只可上傳一次)
-        </h5>
+        <h5 className="upload-img-form-label">上傳校正圖片：</h5>
         <PanelSelector />
       </div>
       <hr />
 
       <div className="upload-img-form-container">
-        <h5 className="upload-img-form-label">上傳images: </h5>
+        <h5 className="upload-img-form-label">上傳圖片: </h5>
 
         {imageId.map((val, index) =>
           index >= 0 ? (

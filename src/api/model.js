@@ -1,4 +1,4 @@
-import axios from "../components/axios";
+import axios from "./axios";
 
 export async function getModelList() {
   try {

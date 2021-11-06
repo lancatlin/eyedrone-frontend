@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
-import axios from "./axios";
+import axios from "../api/axios";
 
 async function getPredicts() {
   try {
@@ -25,7 +25,6 @@ function PredictList() {
     return <p>發生錯誤</p>;
   }
   const predictList = data.map((predict, index) => {
-    console.log(predict);
     const name = predict.created_at.toString();
     return (
       <li key={predict.id}>

@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
-import axios from "./axios";
+import axios, { BASE_URL } from "../api/axios";
+import translate from "./translate";
 
 import useHoverPopUp from "./useHoverPopUp";
 
@@ -11,20 +12,20 @@ function ResultImage({ resultId, imageKey, url, getValue }) {
   );
 
   return (
-    <div key={id}>
-      <h4 style={{ marginLeft: "0px" }}>{imageKey}</h4>
+    <>
+      <h4 style={{ marginLeft: "0px" }}>{translate[imageKey]}</h4>
       <div style={{ marginBottom: "10px", position: "relative" }}>
         <img
           alt={id}
           id={id}
           className="predict-val-img"
-          src={url}
+          src={`${BASE_URL}${url}`}
           onMouseMove={(e) => update(e)}
           onMouseLeave={hide}
         ></img>
         <HoverPopUp />
       </div>
-    </div>
+    </>
   );
 }
 
@@ -47,7 +48,6 @@ function ResultDetail({ result, resultId }) {
     return <p>發生錯誤</p>;
   }
 
-  console.log(productJSON);
   function getProductValue(e, imageKey) {
     let currentW = document.querySelector(".predict-val-img").offsetWidth; //canvas外的container的width
     let currentH = document.querySelector(".predict-val-img").offsetHeight; //canvas外的container的height
@@ -75,22 +75,24 @@ function ResultDetail({ result, resultId }) {
 
   const imageList = Object.entries(result)
     .filter(([key, value]) => {
-      return key !== "image" && key !== "product" && value;
+      return ["do", "bod", "ss", "nh3n", "rpi"].includes(key);
     })
     .map(([key, value]) => {
       return (
-        <ResultImage
-          resultId={resultId}
-          imageKey={key}
-          url={value}
-          getValue={getProductValue}
-        />
+        <div key={`${result.id}-${key}`}>
+          <ResultImage
+            resultId={result.id}
+            imageKey={key}
+            url={value}
+            getValue={getProductValue}
+          />
+        </div>
       );
     });
 
   return (
-    <div key={resultId}>
-      <h4 style={{ marginLeft: "0px" }}>{result.image}</h4>
+    <div key={result.id}>
+      <h3 style={{ marginLeft: "0px" }}>圖片編號：{result.image}</h3>
       {imageList}
     </div>
   );

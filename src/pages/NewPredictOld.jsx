@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import PrevPic from "../components/prev-pic";
-import axios from "../components/axios";
+import axios from "../api/axios";
 import usePanelSelector from "../components/usePanelSelector";
 import useModelSelector from "../components/useModelSelector";
 
