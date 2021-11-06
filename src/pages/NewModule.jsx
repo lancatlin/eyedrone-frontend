@@ -243,22 +243,22 @@ function NewModule(props) {
       timeout: 60000,
     };
     try {
-        chIsUploadingImg(true);
-        fetch(`http://127.0.0.1:8000/api/images/`, {
-          method: "POST",
-          body: param,
-        })
-          .then((response) => response.json())
-          .then((json) => {
-            chIsUploadingImg(false);
-            changeShowCanvas(true);
-            console.log(json);
-            changeGroup(imageId.length);
-            changeTotalGroup(imageId.length);
-            changeImageId([...imageId, json.id]);
-            console.log(json.rgb);
-            chPreviewImgUrl([...previewImgUrl, json.rgb]);
-          });
+      chIsUploadingImg(true);
+      fetch(`http://127.0.0.1:8000/api/images/`, {
+        method: "POST",
+        body: param,
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          chIsUploadingImg(false);
+          changeShowCanvas(true);
+          console.log(json);
+          changeGroup(imageId.length);
+          changeTotalGroup(imageId.length);
+          changeImageId([...imageId, json.id]);
+          console.log(json.rgb);
+          chPreviewImgUrl([...previewImgUrl, json.rgb]);
+        });
       console.log("sent image");
     } catch (e) {
       console.log(e);
@@ -611,23 +611,31 @@ function NewModule(props) {
       //const res = await axios.put(`/api/models/${modelId}/`, { name: modelName, points: infoList });
       let id_for_build = 0;
       if (id != null) {
-        const res_point = await axios.put(`/api/models/${id}/`, {
-          name: modelName,
-          points: infoList,
-        }, {timeout: 60000});
+        const res_point = await axios.put(
+          `/api/models/${id}/`,
+          {
+            name: modelName,
+            points: infoList,
+          },
+          { timeout: 60000 }
+        );
         id_for_build = id;
         console.log(res_point.data);
       } else {
-        const res = await axios.post("/api/models/", {
-          name: modelName,
-          points: infoList,
-        }, {timeout: 60000});
+        const res = await axios.post(
+          "/api/models/",
+          {
+            name: modelName,
+            points: infoList,
+          },
+          { timeout: 60000 }
+        );
         console.log(res.data.id);
         id_for_build = res.data.id;
         //const res_point = await axios.put(`/api/models/${res.data.id}/`, { name: modelName,  });
         //console.log(res_point.data);
       }
-      window.location.href = "/models/"+id_for_build+"-"+modelName;
+      window.location.href = "/models/" + id_for_build + "-" + modelName;
     } catch (e) {
       console.log(e);
     }
@@ -655,7 +663,7 @@ function NewModule(props) {
         <h5 className="upload-img-form-label">
           上傳panel: (panel只可上傳一次)
         </h5>
-        <PanelSelector /> 
+        <PanelSelector />
       </div>
       <hr />
 
@@ -738,8 +746,7 @@ function NewModule(props) {
           確認
         </button>
       </div>
-      <div className="handle-table" style={{ width: "70vw" }}>
-        {/* style={{ display: modelId !== 0 ? "block" : "none" }} */}
+      <div className="handle-table">
         <Table
           striped
           bordered
@@ -748,11 +755,11 @@ function NewModule(props) {
         >
           <thead>
             <tr>
-              <th>group</th>
-              <th>do</th>
-              <th>bod</th>
-              <th>ss</th>
-              <th>nh3n</th>
+              <th>圖片編號</th>
+              <th>溶氧量</th>
+              <th>生化需氧量</th>
+              <th>懸浮固體</th>
+              <th>氨氮</th>
             </tr>
           </thead>
           <tbody>

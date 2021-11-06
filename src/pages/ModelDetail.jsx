@@ -36,7 +36,7 @@ function ModelDetail() {
   const substanceList = data.substances.map(({ name, formula, r2 }) => (
     <div key={name}>
       <h3>{name}</h3>
-      <p>公式：{formula}</p>
+      <p>模型：{formula}</p>
       <p>R2：{format(r2)}</p>
     </div>
   ));
@@ -67,18 +67,21 @@ function ModelDetail() {
             {x}, {y}
           </td>
           <td>
-            {data.points[index].do} / {format(do_val)}
+            {data.points[index].do} / {format(do_val)} /{" "}
+            {percent(do_val / point.do - 1)}
           </td>
           <td>
-            {data.points[index].bod} / {format(bod)}
+            {data.points[index].bod} / {format(bod)} /{" "}
+            {percent(bod / point.bod - 1)}
           </td>
           <td>
-            {data.points[index].ss} / {format(ss)}
+            {data.points[index].ss} / {format(ss)} /{" "}
+            {percent(ss / point.ss - 1)}
           </td>
           <td>
-            {data.points[index].nh3n} / {format(nh3n)}
+            {data.points[index].nh3n} / {format(nh3n)} /{" "}
+            {percent(nh3n / point.nh3n - 1)}
           </td>
-          <td>{percent((err_do + err_bod + err_ss + err_nh3n) / 4)}</td>
         </tr>
       );
     }
@@ -86,7 +89,8 @@ function ModelDetail() {
 
   score.sum = (score.do + score.bod + score.ss + score.nh3n) / 4;
   const predictionTable = (
-    <div>
+    <div align="center">
+      <strong>實際值 / 預測值 / 誤差值</strong>
       <Table
         striped
         bordered
@@ -95,12 +99,11 @@ function ModelDetail() {
       >
         <thead>
           <tr>
-            <th>實際值 / 預測值 </th>
+            <th>座標</th>
             <th>do</th>
             <th>bod</th>
             <th>ss</th>
             <th>nh3n</th>
-            <th>平均誤差</th>
           </tr>
         </thead>
         <tbody>
@@ -111,16 +114,16 @@ function ModelDetail() {
             <td>{percent(score.bod / data.predictions.length)}</td>
             <td>{percent(score.ss / data.predictions.length)}</td>
             <td>{percent(score.nh3n / data.predictions.length)}</td>
-            <td>{percent(score.sum / data.predictions.length)}</td>
           </tr>
         </tbody>
       </Table>
+      <p>
+        總誤差：<strong>{percent(score.sum / data.predictions.length)}</strong>
+      </p>
     </div>
   );
 
-  const predictions_btn = (
-    <button onClick={post_prdictions}>predictions</button>
-  );
+  const predictions_btn = <button onClick={post_prdictions}>計算預測點</button>;
 
   async function post_prdictions() {
     console.log(id);
@@ -132,7 +135,7 @@ function ModelDetail() {
     window.location.reload();
   }
 
-  const build_model_btn = <button onClick={build_model}>build</button>;
+  const build_model_btn = <button onClick={build_model}>訓練模型</button>;
 
   async function build_model() {
     fetch(`http://127.0.0.1:8000/api/models/${id}/build/`, {
@@ -182,10 +185,10 @@ function ModelDetail() {
   return (
     <div>
       <h1>{data.name}</h1>
-      <div>{substanceList}</div>
-      <div>{predictionTable}</div>
       <div>{predictions_btn}</div>
       <div>{build_model_btn}</div>
+      <div>{substanceList}</div>
+      <div>{predictionTable}</div>
       <div
         id="streaming"
         style={{ display: isShowStream ? "block" : "none" }}

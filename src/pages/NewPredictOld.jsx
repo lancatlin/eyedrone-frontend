@@ -310,7 +310,7 @@ function NewPredict() {
       <hr />
 
       <div className="upload-img-form-container">
-        <h5 className="upload-img-form-label">上傳images: </h5>
+        <h5 className="upload-img-form-label">上傳圖片：</h5>
 
         {imageId.map((val, index) =>
           index >= 0 ? (

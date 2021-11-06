@@ -192,7 +192,6 @@ p {
 }
 
 .handle-table {
-  width: 70vw;
   margin: 0px auto 50px auto;
 }
 .input-data {
@@ -262,4 +261,15 @@ p {
   color: #fff;
   border-radius: 10px;
   background-color: #52616b;
+}
+
+.popUp-background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
 }

@@ -35,10 +35,10 @@ function PredictList() {
   });
   return (
     <div>
-      <h1 className="big-title">所有預測</h1>
+      <h1 className="big-title">水質預測列表</h1>
       <div className="center-button">
         <Link className="new-model-button" to="/predicts/new">
-          新增預測
+          新增水質預測
         </Link>
       </div>
       <ul>{predictList}</ul>

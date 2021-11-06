@@ -22,10 +22,10 @@ function ModelList() {
   ));
   return (
     <div>
-      <h1 className="big-title">所有模型</h1>
+      <h1 className="big-title">水質模型列表</h1>
       <div className="center-button">
         <Link className="new-model-button" to="/models/new">
-          新增模型
+          新增水質模型
         </Link>
       </div>
       <ul>{modelList}</ul>
